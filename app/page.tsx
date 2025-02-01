@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Copy } from "lucide-react"
+import { Copy, Shield, Home, Utensils, Tv, TreePine, Car, Mountain, Waves, Baby, Accessibility, Dumbbell, Bath } from "lucide-react"
 
 interface CategoryAmenities {
   [key: string]: string
@@ -11,7 +11,33 @@ interface Categories {
   [key: string]: CategoryAmenities
 }
 
-const Home = () => {
+const AirbnbLogo = () => (
+  <svg
+    viewBox="0 0 32 32"
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-8 w-8 fill-[#FF385C]"
+    aria-hidden="true"
+  >
+    <path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c1.954 3.83 6.114 12.54 7.1 14.836l.145.353c.667 1.591.91 2.472.96 3.396l.01.415.001.228c0 4.062-2.877 6.478-6.357 6.478-2.224 0-4.556-1.258-6.709-3.386l-.257-.26-.172-.179h-.011l-.176.185c-2.044 2.1-4.267 3.42-6.414 3.615l-.28.019-.267.006C5.377 31 2.5 28.584 2.5 24.522l.005-.469c.026-.928.23-1.768.83-3.244l.216-.524c.966-2.298 6.083-12.989 7.707-16.034C12.537 1.963 13.992 1 16 1zm0 2c-1.239 0-2.053.539-2.987 2.21l-.523 1.008c-1.926 3.776-6.06 12.43-7.031 14.692l-.345.836c-.427 1.071-.573 1.655-.605 2.24l-.009.33v.206C4.5 27.395 6.411 29 8.857 29c1.773 0 3.87-1.236 5.831-3.354-2.295-2.938-3.855-6.45-3.855-8.91 0-2.913 1.933-5.386 5.178-5.386 3.245 0 5.178 2.473 5.178 5.386 0 2.456-1.555 5.96-3.855 8.907C19.277 27.766 21.37 29 23.142 29c2.447 0 4.358-1.605 4.358-4.478l-.004-.411c-.019-.672-.17-1.296-.714-2.62l-.248-.6c-1.065-2.478-5.993-12.768-7.538-15.664C18.053 3.539 17.24 3 16 3zm.01 10.316c-2.01 0-3.177 1.514-3.177 3.42 0 1.797 1.18 4.665 2.93 7.001.23.309.463.591.685.855l.227.27.068.08c.441-.504.84-1.03 1.197-1.572l.109-.17c1.749-2.336 2.929-5.204 2.929-7.001 0-1.906-1.166-3.42-3.177-3.42z" />
+  </svg>
+)
+
+const categoryIcons = {
+  'Safety & Security': Shield,
+  'Essential Amenities': Home,
+  'Kitchen & Dining': Utensils,
+  'Entertainment': Tv,
+  'Outdoor': TreePine,
+  'Parking': Car,
+  'Views & Location': Mountain,
+  'Pool & Spa': Waves,
+  'Family Friendly': Baby,
+  'Accessibility': Accessibility,
+  'Exercise & Recreation': Dumbbell,
+  'Bathroom & Comfort': Bath,
+} as const
+
+const HomePage = () => {
   const [selectedAmenities, setSelectedAmenities] = useState<
     Record<string, boolean>
   >({})
@@ -21,6 +47,7 @@ const Home = () => {
   const [originalParams, setOriginalParams] = useState<URLSearchParams | null>(
     null
   )
+  const [showUrl, setShowUrl] = useState(false)
 
   const categories: Categories = {
     "Safety & Security": {
@@ -251,13 +278,10 @@ const Home = () => {
     <main className="min-h-screen bg-gray-50 py-8">
       <div className="p-4 max-w-4xl mx-auto">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2 text-[#FF385C]">
-            Airbnb Amenity Selector
+          <h2 className="text-2xl font-bold mb-2 text-[#FF385C] flex items-center gap-2">
+            <AirbnbLogo />
+            AirBNB Amenity Selector
           </h2>
-          <p className="text-gray-600 mb-4">
-            Paste your Airbnb URL below or select amenities to generate URL
-            parameters
-          </p>
 
           <div className="mb-4">
             <input
@@ -268,42 +292,42 @@ const Home = () => {
             />
             {error && <p className="text-[#FF385C] text-sm mt-1">{error}</p>}
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Object.entries(categories).map(([category, amenities]) => (
-            <div key={category} className="bg-white rounded-lg shadow p-4">
-              <h3 className="font-bold mb-3 text-lg text-[#222222]">
-                {category}
-              </h3>
-              <div className="space-y-2">
-                {Object.entries(amenities).map(([code, name]) => (
-                  <button
-                    key={code}
-                    onClick={() => toggleAmenity(code)}
-                    className={`w-full text-left px-3 py-2 rounded transition-colors ${
-                      selectedAmenities[code]
-                        ? "bg-[#FFE1E3] text-[#FF385C]"
-                        : "hover:bg-gray-50 text-[#222222]"
-                    }`}
+          {(Object.values(selectedAmenities).some(Boolean) || baseUrl) && (
+            <div className="mt-4 bg-white p-4 rounded-lg shadow">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex gap-2">
+                  <a
+                    href={generateFullUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-1 bg-[#FF385C] text-white rounded hover:bg-[#E31C5F] transition-colors"
                   >
-                    <span className="text-sm">
-                      {name} ({code})
-                    </span>
+                    Open in Airbnb →
+                  </a>
+                  <button
+                    onClick={copyToClipboard}
+                    className="flex items-center gap-2 px-3 py-1 bg-[#FF385C] text-white rounded hover:bg-[#E31C5F] transition-colors"
+                  >
+                    <Copy size={16} />
+                    {copiedText ? "Copied!" : "Copy"}
                   </button>
-                ))}
+                  <button
+                    onClick={() => setShowUrl(!showUrl)}
+                    className="flex items-center gap-2 px-3 py-1 border border-[#FF385C] text-[#FF385C] rounded hover:bg-[#FFE1E3] transition-colors"
+                  >
+                    {showUrl ? "Hide URL" : "Show URL"}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
 
-        {(Object.values(selectedAmenities).some(Boolean) || baseUrl) && (
-          <div className="mt-6 bg-white p-4 rounded-lg shadow">
-            <div className="mb-4">
-              <h3 className="font-bold mb-2 text-[#222222]">
-                Selected Amenities:
-              </h3>
-              <div className="flex flex-wrap gap-2">
+              {showUrl && (
+                <div className="bg-gray-50 p-3 rounded border border-gray-200 break-all text-sm text-[#222222]">
+                  {generateFullUrl()}
+                </div>
+              )}
+
+              <div className="mt-3 flex flex-wrap gap-2">
                 {Object.entries(selectedAmenities)
                   .filter(([, isSelected]) => isSelected)
                   .map(([code]) => {
@@ -325,34 +349,42 @@ const Home = () => {
                   })}
               </div>
             </div>
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="font-bold text-[#222222]">Generated URL:</h3>
-              <button
-                onClick={copyToClipboard}
-                className="flex items-center gap-2 px-3 py-1 bg-[#FF385C] text-white rounded hover:bg-[#E31C5F] transition-colors"
-              >
-                <Copy size={16} />
-                {copiedText ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <div className="bg-gray-50 p-3 rounded border border-gray-200 break-all text-sm mb-3 text-[#222222]">
-              {generateFullUrl()}
-            </div>
-            <div className="flex justify-center">
-              <a
-                href={generateFullUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-[#FF385C] hover:bg-[#E31C5F] text-white rounded transition-colors"
-              >
-                Open in Airbnb →
-              </a>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {Object.entries(categories).map(([category, amenities]) => {
+            const IconComponent = categoryIcons[category as keyof typeof categoryIcons]
+            return (
+              <div key={category} className="bg-white rounded-lg shadow p-4">
+                <h3 className="font-bold mb-3 text-lg text-[#222222] flex items-center gap-2">
+                  {IconComponent && <IconComponent className="h-5 w-5 text-[#FF385C]" />}
+                  {category}
+                </h3>
+                <div className="space-y-2">
+                  {Object.entries(amenities).map(([code, name]) => (
+                    <button
+                      key={code}
+                      onClick={() => toggleAmenity(code)}
+                      className={`w-full text-left px-3 py-2 rounded transition-colors ${
+                        selectedAmenities[code]
+                          ? "bg-[#FFE1E3] text-[#FF385C]"
+                          : "hover:bg-gray-50 text-[#222222]"
+                      }`}
+                    >
+                      <span className="text-sm">
+                        {name} ({code})
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </main>
   )
 }
 
-export default Home
+export default HomePage
