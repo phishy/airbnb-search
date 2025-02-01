@@ -12,76 +12,162 @@ interface Categories {
 }
 
 const Home = () => {
-  const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({})
+  const [selectedAmenities, setSelectedAmenities] = useState<
+    Record<string, boolean>
+  >({})
   const [copiedText, setCopiedText] = useState(false)
   const [baseUrl, setBaseUrl] = useState("")
   const [error, setError] = useState("")
-  const [originalParams, setOriginalParams] = useState<URLSearchParams | null>(null)
+  const [originalParams, setOriginalParams] = useState<URLSearchParams | null>(
+    null
+  )
 
   const categories: Categories = {
-    'Essential Amenities': {
-      '21': 'Elevator',
-      '4': 'WiFi',
-      '5': 'Air Conditioning',
-      '8': 'Kitchen',
-      '30': 'Heating',
-      '33': 'Washer',
-      '34': 'Dryer',
-      '40': 'Essentials',
-      '41': 'Shampoo',
-      '45': 'Hair Dryer',
-      '46': 'Iron',
-      '47': 'Workspace'
+    "Safety & Security": {
+      "35": "Smoke alarm",
+      "36": "Carbon monoxide alarm",
+      "37": "First aid kit",
+      "39": "Fire extinguisher",
+      "51": "Self check-in",
+      "52": "Smart lock",
+      "53": "Keypad",
+      "54": "Lockbox",
+      "229": "Security cameras",
+      "231": "Alarm system",
+      "232": "Safe",
     },
-    'Kitchen & Dining': {
-      '89': 'Microwave',
-      '90': 'Coffee Maker',
-      '91': 'Refrigerator',
-      '92': 'Dishwasher',
-      '95': 'Oven',
-      '96': 'Stove',
-      '236': 'Dining Table'
+    "Essential Amenities": {
+      "21": "Elevator",
+      "4": "WiFi",
+      "5": "Air Conditioning",
+      "30": "Heating",
+      "33": "Washer",
+      "34": "Dryer",
+      "40": "Essentials",
+      "41": "Shampoo",
+      "45": "Hair Dryer",
+      "46": "Iron",
+      "47": "Workspace",
+      "77": "Hot water",
+      "85": "Bed linens",
+      "86": "Extra pillows and blankets",
+      "57": "Private entrance",
+      "87": "Ethernet connection",
+      "103": "Luggage dropoff allowed",
+      "104": "Long term stays allowed",
     },
-    'Entertainment': {
-      '1': 'Television',
-      '151': 'Smart TV',
-      '185': 'Sound System',
-      '265': 'Netflix',
-      '266': 'HBO GO',
-      '267': 'Amazon Echo'
+    "Kitchen & Dining": {
+      "8": "Kitchen",
+      "89": "Microwave",
+      "90": "Coffee Maker",
+      "91": "Refrigerator",
+      "92": "Dishwasher",
+      "93": "Dishes and silverware",
+      "94": "Cooking basics",
+      "95": "Oven",
+      "96": "Stove",
+      "146": "Mini fridge",
+      "235": "Espresso machine",
+      "236": "Dining Table",
+      "251": "Toaster",
     },
-    'Outdoor': {
-      '99': 'BBQ Grill',
-      '100': 'Patio/Balcony',
-      '101': 'Backyard',
-      '179': 'Outdoor Dining',
-      '219': 'Fire Pit'
+    Entertainment: {
+      "1": "Television",
+      "2": "Cable TV",
+      "151": "Smart TV",
+      "185": "Sound System",
+      "265": "Netflix",
+      "266": "HBO GO",
+      "267": "Amazon Echo",
+      "152": "DVD player",
+      "189": "Projector and screen",
     },
-    'Parking': {
-      '9': 'Free Parking',
-      '22': 'Garage',
-      '23': 'Street Parking',
-      '97': 'EV Charger',
-      '287': 'Paid Parking'
+    Outdoor: {
+      "99": "BBQ Grill",
+      "100": "Patio/Balcony",
+      "101": "Backyard",
+      "179": "Outdoor Dining",
+      "219": "Fire Pit",
+      "280": "Outdoor furniture",
+      "210": "Outdoor shower",
+      "255": "Garden",
     },
-    'Views & Location': {
-      '154': 'Mountain view',
-      '155': 'Beach view',
-      '578': 'View tower',
-      '181': 'Balcony',
-      '100': 'Patio/Balcony',
-      '132': 'Waterfront',
-      '133': 'Lake Access',
-      '134': 'Beachfront',
-      '674': 'Beach Access'
+    Parking: {
+      "9": "Free Parking",
+      "22": "Garage",
+      "23": "Street Parking",
+      "97": "EV Charger",
+      "287": "Paid Parking",
+      "10": "Paid parking off premises",
+      "212": "Driveway parking",
+      "213": "Underground parking",
     },
-    'Pool & Spa': {
-      '7': 'Pool',
-      '25': 'Hot Tub',
-      '223': 'Sauna',
-      '258': 'Private Pool',
-      '260': 'Private Hot Tub'
-    }
+    "Views & Location": {
+      "154": "Mountain view",
+      "155": "Beach view",
+      "578": "View tower",
+      "181": "Balcony",
+      "132": "Waterfront",
+      "133": "Lake Access",
+      "134": "Beachfront",
+      "674": "Beach Access",
+      "135": "Ski-in/Ski-out",
+    },
+    "Pool & Spa": {
+      "7": "Pool",
+      "25": "Hot Tub",
+      "223": "Sauna",
+      "224": "Steam room",
+      "258": "Private Pool",
+      "259": "Shared pool",
+      "260": "Private Hot Tub",
+      "261": "Shared hot tub",
+      "240": "Infinity pool",
+      "254": "Heated pool",
+    },
+    "Family Friendly": {
+      "64": "High chair",
+      "66": "Children's books and toys",
+      "72": "Pack 'n play/Travel crib",
+      "73": "Room-darkening shades",
+      "74": "Children's dinnerware",
+      "31": "Family/kid friendly",
+      "59": "Baby monitor",
+      "63": "Changing table",
+      "65": "Baby safety gates",
+      "243": "Children's pool",
+    },
+    Accessibility: {
+      "6": "Wheelchair accessible",
+      "115": "Step-free access",
+      "116": "Wide entrance",
+      "124": "Roll-in shower with chair",
+      "125": "Accessible-height toilet",
+      "121": "Wide doorway to bathroom",
+      "122": "Fixed grab bars for shower",
+      "296": "Step-free shower",
+    },
+    "Exercise & Recreation": {
+      "15": "Gym",
+      "227": "Exercise equipment",
+      "256": "Private gym",
+      "257": "Shared gym",
+      "214": "Tennis court",
+      "201": "Bikes",
+      "515": "Ping Pong Table",
+      "521": "Pool Table",
+    },
+    "Bathroom & Comfort": {
+      "61": "Bathtub",
+      "79": "Body soap",
+      "283": "Walk-in shower",
+      "275": "En suite bathroom",
+      "78": "Private bathroom",
+      "163": "Shower bathtub combo",
+      "164": "Rain shower",
+      "167": "Bidet",
+      "168": "Heated towel rack",
+    },
   }
 
   const parseExistingUrl = (url: string) => {
@@ -122,10 +208,12 @@ const Home = () => {
       const url = baseUrl ? new URL(baseUrl) : new URL(defaultBaseUrl)
 
       // Start with original parameters if they exist
-      const params = originalParams ? new URLSearchParams(originalParams) : new URLSearchParams()
+      const params = originalParams
+        ? new URLSearchParams(originalParams)
+        : new URLSearchParams()
 
       // Remove only amenities parameters
-      params.delete('amenities[]')
+      params.delete("amenities[]")
 
       // Add selected amenities
       Object.entries(selectedAmenities)
@@ -185,7 +273,9 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {Object.entries(categories).map(([category, amenities]) => (
             <div key={category} className="bg-white rounded-lg shadow p-4">
-              <h3 className="font-bold mb-3 text-lg text-[#222222]">{category}</h3>
+              <h3 className="font-bold mb-3 text-lg text-[#222222]">
+                {category}
+              </h3>
               <div className="space-y-2">
                 {Object.entries(amenities).map(([code, name]) => (
                   <button
@@ -210,7 +300,9 @@ const Home = () => {
         {(Object.values(selectedAmenities).some(Boolean) || baseUrl) && (
           <div className="mt-6 bg-white p-4 rounded-lg shadow">
             <div className="mb-4">
-              <h3 className="font-bold mb-2 text-[#222222]">Selected Amenities:</h3>
+              <h3 className="font-bold mb-2 text-[#222222]">
+                Selected Amenities:
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(selectedAmenities)
                   .filter(([, isSelected]) => isSelected)
