@@ -310,7 +310,7 @@ const HomePage = () => {
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-2 text-[#FF385C] flex items-center gap-2">
             <AirbnbLogo />
-            AirBNB Amenity Selector
+            AirBNB Secret Amenity Filters
           </h2>
 
           <div className="mb-4">
