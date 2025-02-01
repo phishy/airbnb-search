@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState } from "react"
-import { Copy, Shield, Home, Utensils, Tv, TreePine, Car, Mountain, Waves, Baby, Accessibility, Dumbbell, Bath, X } from "lucide-react"
+import React, { useState, useEffect } from "react"
+import { Copy, Shield, Home, Utensils, Tv, TreePine, Car, Mountain, Waves, Baby, Accessibility, Dumbbell, Bath, X, Star } from "lucide-react"
 
 interface CategoryAmenities {
   [key: string]: string
@@ -38,9 +38,24 @@ const categoryIcons = {
 } as const
 
 const HomePage = () => {
-  const [selectedAmenities, setSelectedAmenities] = useState<
-    Record<string, boolean>
-  >({})
+  const [selectedAmenities, setSelectedAmenities] = useState<Record<string, boolean>>({})
+  const [favoriteAmenities, setFavoriteAmenities] = useState<Record<string, boolean>>({})
+
+  // Initialize favorites from localStorage after mount
+  useEffect(() => {
+    const saved = localStorage.getItem('favoriteAmenities')
+    if (saved) {
+      setFavoriteAmenities(JSON.parse(saved))
+    }
+  }, [])
+
+  // Save favorites to localStorage when they change
+  useEffect(() => {
+    if (Object.keys(favoriteAmenities).length > 0) {
+      localStorage.setItem('favoriteAmenities', JSON.stringify(favoriteAmenities))
+    }
+  }, [favoriteAmenities])
+
   const [copiedText, setCopiedText] = useState(false)
   const [baseUrl, setBaseUrl] = useState("")
   const [error, setError] = useState("")
@@ -227,6 +242,21 @@ const HomePage = () => {
       ...prev,
       [code]: !prev[code],
     }))
+    // Auto-favorite when selecting, but don't unfavorite when deselecting
+    if (!selectedAmenities[code]) {
+      setFavoriteAmenities(prev => ({
+        ...prev,
+        [code]: true
+      }))
+    }
+  }
+
+  const toggleFavorite = (code: string, e: React.MouseEvent | React.KeyboardEvent) => {
+    e.stopPropagation()
+    setFavoriteAmenities(prev => ({
+      ...prev,
+      [code]: !prev[code]
+    }))
   }
 
   const generateFullUrl = () => {
@@ -374,8 +404,24 @@ const HomePage = () => {
                           : "hover:bg-gray-50 text-[#222222]"
                       }`}
                     >
-                      <span className="text-sm">
-                        {name} ({code})
+                      <span className="text-sm flex items-center justify-between">
+                        <span>{name} ({code})</span>
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => toggleFavorite(code, e)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              toggleFavorite(code, e)
+                            }
+                          }}
+                          className="p-1 hover:bg-[#FFE1E3] rounded-full transition-colors cursor-pointer"
+                        >
+                          <Star
+                            size={14}
+                            className={favoriteAmenities[code] ? "fill-[#FF385C] text-[#FF385C]" : "text-gray-300"}
+                          />
+                        </span>
                       </span>
                     </button>
                   ))}
