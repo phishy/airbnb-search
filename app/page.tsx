@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Copy, Shield, Home, Utensils, Tv, TreePine, Car, Mountain, Waves, Baby, Accessibility, Dumbbell, Bath } from "lucide-react"
+import { Copy, Shield, Home, Utensils, Tv, TreePine, Car, Mountain, Waves, Baby, Accessibility, Dumbbell, Bath, X } from "lucide-react"
 
 interface CategoryAmenities {
   [key: string]: string
@@ -339,12 +339,14 @@ const HomePage = () => {
                       }
                     }
                     return (
-                      <span
+                      <button
                         key={code}
-                        className="px-2 py-1 bg-[#FFE1E3] text-[#FF385C] rounded text-sm"
+                        onClick={() => toggleAmenity(code)}
+                        className="px-2 py-1 bg-[#FFE1E3] text-[#FF385C] rounded text-sm flex items-center gap-1 hover:bg-[#FFD1D4] transition-colors"
                       >
                         {amenityName} ({code})
-                      </span>
+                        <X size={14} className="ml-1" />
+                      </button>
                     )
                   })}
               </div>
