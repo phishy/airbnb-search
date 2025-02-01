@@ -99,7 +99,8 @@ const Home = () => {
 
       setSelectedAmenities(existingAmenities)
       setError("")
-    } catch (_) {
+    } catch (error: unknown) {
+      void error
       setError("Please enter a valid Airbnb URL")
     }
   }
@@ -132,7 +133,8 @@ const Home = () => {
       return `${url.origin}${url.pathname}${
         newParams.toString() ? "?" + newParams.toString() : ""
       }`
-    } catch (_) {
+    } catch (error: unknown) {
+      void error
       const params = new URLSearchParams()
       Object.entries(selectedAmenities)
         .filter(([, isSelected]) => isSelected)
@@ -168,7 +170,7 @@ const Home = () => {
             <input
               type="text"
               placeholder="Paste Airbnb URL here (optional)"
-              className="w-full p-2 border rounded focus:border-[#FF385C] focus:ring-[#FF385C] focus:outline-none"
+              className="w-full text-black p-2 border rounded focus:border-[#FF385C] focus:ring-[#FF385C] focus:outline-none"
               onChange={(e) => parseExistingUrl(e.target.value)}
             />
             {error && <p className="text-[#FF385C] text-sm mt-1">{error}</p>}
