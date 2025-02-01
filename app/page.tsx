@@ -16,6 +16,7 @@ const Home = () => {
   const [copiedText, setCopiedText] = useState(false)
   const [baseUrl, setBaseUrl] = useState("")
   const [error, setError] = useState("")
+  const [originalParams, setOriginalParams] = useState<URLSearchParams | null>(null)
 
   const categories: Categories = {
     'Essential Amenities': {
@@ -88,9 +89,12 @@ const Home = () => {
       const parsedUrl = new URL(url)
       setBaseUrl(url.split("?")[0])
 
+      // Store all original parameters
       const params = new URLSearchParams(parsedUrl.search)
-      const existingAmenities: Record<string, boolean> = {}
+      setOriginalParams(params)
 
+      // Extract only amenities for selection state
+      const existingAmenities: Record<string, boolean> = {}
       params.forEach((value, key) => {
         if (key === "amenities[]") {
           existingAmenities[value] = true
@@ -116,25 +120,26 @@ const Home = () => {
     const defaultBaseUrl = "https://www.airbnb.com/s/homes"
     try {
       const url = baseUrl ? new URL(baseUrl) : new URL(defaultBaseUrl)
-      const params = new URLSearchParams(url.search)
 
-      const nonAmenityParams = Array.from(params.entries()).filter(
-        ([key]) => key !== "amenities[]"
-      )
+      // Start with original parameters if they exist
+      const params = originalParams ? new URLSearchParams(originalParams) : new URLSearchParams()
 
-      const newParams = new URLSearchParams(nonAmenityParams)
+      // Remove only amenities parameters
+      params.delete('amenities[]')
 
+      // Add selected amenities
       Object.entries(selectedAmenities)
         .filter(([, isSelected]) => isSelected)
         .forEach(([code]) => {
-          newParams.append("amenities[]", code)
+          params.append("amenities[]", code)
         })
 
       return `${url.origin}${url.pathname}${
-        newParams.toString() ? "?" + newParams.toString() : ""
+        params.toString() ? "?" + params.toString() : ""
       }`
     } catch (error: unknown) {
       void error
+      // Fallback for invalid URLs
       const params = new URLSearchParams()
       Object.entries(selectedAmenities)
         .filter(([, isSelected]) => isSelected)
